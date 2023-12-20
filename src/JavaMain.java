@@ -12,8 +12,6 @@ import java.util.*;
 public class JavaMain {
     public static final long mod = (long) (1e9 + 7);
 
-
-
     public static void change(int[] arr) { // 引用传递
         int n = arr.length;
         for (int i = 0; i < n; i++) {
