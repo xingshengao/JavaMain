@@ -1,3 +1,5 @@
+package com.edu.nju.test;
+
 import com.edu.nju.test.A;
 import com.edu.nju.test.B;
 import com.sun.security.jgss.GSSUtil;
@@ -133,7 +135,7 @@ public class JavaMain {
         ArrayList<Integer> list = new ArrayList<>();
         list.add(100);
         list.add(155);
-        list.forEach(a-> System.out.println(a));
+        list.forEach(a -> System.out.println(a));
     }
 
 }

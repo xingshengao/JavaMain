@@ -1,3 +1,5 @@
+package com.edu.nju.test;
+
 import java.util.Objects;
 
 public class Student {
@@ -14,7 +16,7 @@ public class Student {
 
     @Override
     public String toString() {
-        return "Student{" +
+        return "com.edu.nju.test.Student{" +
                 "name='" + name + '\'' +
                 ", a=" + a +
                 '}';
