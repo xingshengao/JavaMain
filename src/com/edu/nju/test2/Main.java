@@ -1,7 +1,9 @@
 package com.edu.nju.test2;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Arrays;
-import java.util.TreeSet;
 
 /**
  * @author XsaDeleteMemory
@@ -47,13 +49,15 @@ class Solution {
 public class Main {
     static final int mod = 1000000007;
 
-    public static void main(String[] args) {
+    public static void Fil() throws IOException {
+        FileOutputStream fo = new FileOutputStream("test1.txt");
+        String s1 = "dsjaiofnoasifo";
+        byte[] byte1 = s1.getBytes();
+        fo.write(byte1);
+        fo.close();
+    }
+    public static void main(String[] args) throws IOException {
+        Fil();
 
-       Student s = new Student();
-        try {
-            s.setAge(10000);
-        } catch (RuntimeException e) {
-            System.out.println("年龄异常");
-        }
     }
 }

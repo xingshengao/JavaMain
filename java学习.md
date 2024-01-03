@@ -738,4 +738,190 @@ try {
 * 如果捕获多个异常, 写多个catch, 细节: 异常中存在父子关系的话, 父类写在下面
 * JDK 7之后, 可以一个catch捕获多个异常 catch(E e | E1 a) 
 * 如果try的异常没有被捕获, 采用虚拟机默认的异常处理方式
-* 
+
+### 异常常见方法
+
+```java
+e.getMessage();
+sout << e.toString();
+e,printStackTrace();
+```
+
+### 抛出异常
+
+```java
+throws 写在方法定义处
+throw 写在方法内, 结束方法
+public class C{
+    public void method() throws 异常1, 异常2 {
+        if () {
+            throw 异常1
+        }
+        if () {
+            throw 异常2
+        }
+    }
+}
+
+```
+
+### File类
+
+```java
+File f = new File("路径");
+成员方法:创建和删除
+boolean exists();
+etc
+creatNewFile();
+mkdir(); // 创建单级文件夹
+mkdirs(); // 创建多级文件夹
+delete();
+遍历:
+File[] fs = f.listFiles();
+for (File oneFile : fs) {}
+```
+
+
+
+## IO流
+
+字节流和字符流
+
+### 字节流
+
+```java
+InputStream(); 子类:FileInputStream()
+OutputStream(); 子类FileOutputStream();
+例如:
+FileOutputStream fo = new FileOutputStream("test1.txt");
+fo.write(87);
+fo.close();
+// 写的都是字节流
+public static void Fil() throws IOException {
+    FileOutputStream fo = new FileOutputStream("test1.txt");
+    String s1 = "dsjaiofnoasifo";
+    byte[] byte1 = s1.getBytes();
+    fo.write(byte1);
+    fo.close();
+}
+```
+
+```java
+InputStream(); 子类:FileInputStream();
+FileInputStream fo = new FileInputStream("test1.txt");
+int a = fo.read();
+fo.close();
+// 一次读取一个字节, 读到文件末尾了, read()返回-1
+
+// 循环读取
+int b;
+while ((b = fo.read()) != -1) {}
+```
+
+### 字符流
+
+默认一次读取一个字节, 遇到中文, 一次读取多个字符
+
+```java
+FileReader;
+FileWriter;
+
+```
+
+##  多线程&JUC
+
+ 线程: 操作系统运行调度的最小实体, 被包含在进程中
+
+并发: 同一时刻多个指令在单个CPU上交替运行
+
+并行: 同一时刻, 多个线程在多个CPU上同时执行
+
+ ### 多线程Thread类
+
+```java
+public class ThreadMemo {
+    // 多线程方法一:
+    // 自己定义一个类, 继承Thread类
+    // 重写run方法
+    // 创建子类对象, 启动线程
+    public static void main(String[] args) {
+        MyThread t1 = new MyThread();
+        t1.start(); // 开启线程
+    }
+}
+// 是并发的, 例如
+MyThread t1 = new MyThread();
+MyThread t2 = new MyThread();
+t1.setName("进程1");
+t2.setName("进程2");
+t1.start(); // 开启线程
+t2.start();
+两个线程交替进行
+```
+
+### Runnable接口的实现方式
+
+```java
+// 创建自己的类, implement Runnable接口
+// 重写接口的run方法
+// 创建自己的类的对象
+// 创建一个Thread类的对象, 并开启线程
+public class MyRun implements Runnable {
+    @Override
+    public void run() {
+        // 获取当前进程的对象
+        Thread t = Thread.currentThread();
+        for (int i = 0; i < 100; ++i) {
+            System.out.println(t.getName() + "HelloWorld");
+
+        }
+    }
+}
+public static void main(String[] args) {
+        MyRun myRun = new MyRun();
+        Thread t1 = new Thread(myRun); //创建线程对象
+        Thread t2 = new Thread(myRun); //创建线程对象
+        t1.setName("进程1");
+        t2.setName("进程2");
+        t1.start();
+        t2.start();
+    }
+// 实现效果也是交替进行的
+```
+
+### 利用Callable接口和Future接口实现
+
+```java
+// 特点: 可以获取多线程运行的结果
+// 创建一个类实现Callable接口
+// 重写call方法(有返回值, 表示多线程运行的结果)
+// 创建自己的类的对象(表示多线程要执行的任务)
+// FutureTask对象, 管理多线程运行的结果
+// 创建Thread对象, 启动表示线程
+package com.edu.nju.test3;
+
+import java.util.concurrent.Callable;
+
+public class MyCallable implements Callable<Integer> {
+    @Override
+    public Integer call() throws Exception {
+        int s = 0;
+        for (int i = 0; i < 100; i++) {
+            s += i;
+        }
+        return s;
+    }
+}
+
+ public static void main(String[] args) throws ExecutionException, InterruptedException {
+        MyCallable mc = new MyCallable(); // (表示多线程要执行的任务)
+        FutureTask<Integer> ft = new FutureTask<>(mc); // 管理多线程运行的结果
+        Thread t1 = new Thread(ft);
+        t1.start();
+
+        // 获取结果
+        Integer a = ft.get();
+        System.out.println(a);
+    }
+```
+
